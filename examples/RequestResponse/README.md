@@ -65,7 +65,7 @@ Before proceeding, ensure you have:
 Build the example:
 
 ```sh
-cd iceoryx2-ffi/csharp/examples/RequestResponse
+cd iceoryx2-csharp/examples/RequestResponse
 dotnet build
 ```
 
