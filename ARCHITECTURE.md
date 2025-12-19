@@ -11,19 +11,19 @@ access to iceoryx2 through a P/Invoke FFI layer.
 
 ```text
 ┌──────────────────────────────────────────────────────────────────────────┐
-│                          Your C# Application                              │
+│                          Your C# Application                             │
 ├──────────────────────────────────────────────────────────────────────────┤
-│                     iceoryx2-csharp (C# Bindings)                         │
+│                     iceoryx2-csharp (C# Bindings)                        │
 │  ┌─────────────┐  ┌─────────────────┐  ┌─────────────────────────────┐   │
 │  │ High-Level  │  │   SafeHandle    │  │     P/Invoke FFI Layer      │   │
 │  │    APIs     │  │   Management    │  │  (Native Method Bindings)   │   │
 │  └─────────────┘  └─────────────────┘  └─────────────────────────────┘   │
 ├──────────────────────────────────────────────────────────────────────────┤
-│                      iceoryx2-ffi-c (C API)                               │
+│                      iceoryx2-ffi-c (C API)                              │
 ├──────────────────────────────────────────────────────────────────────────┤
-│                      iceoryx2 (Rust Core)                                 │
+│                      iceoryx2 (Rust Core)                                │
 ├──────────────────────────────────────────────────────────────────────────┤
-│                    Operating System (Shared Memory)                       │
+│                    Operating System (Shared Memory)                      │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
