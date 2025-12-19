@@ -92,7 +92,7 @@ efficiently.
 
 > [!TIP]
 > You may hit the maximum supported number of ports when too many client or
-> server processes are running. Refer to the [iceoryx2 config](../../../../config)
+> server processes are running. Refer to the [iceoryx2 config](../../iceoryx2/config)
 > to configure limits globally, or use the Service builder API to set them
 > for a specific service.
 
