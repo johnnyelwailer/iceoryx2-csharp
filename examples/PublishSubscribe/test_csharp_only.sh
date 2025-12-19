@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /Users/patdhlk/src/patdhlk/iceoryx2/iceoryx2-ffi/csharp/examples/PublishSubscribe
+cd "$(dirname "$(readlink -f "$0")")" || exit
 
 echo "=== Starting C# Publisher ==="
 dotnet run -c Release --no-build -- publisher 2>&1 &
