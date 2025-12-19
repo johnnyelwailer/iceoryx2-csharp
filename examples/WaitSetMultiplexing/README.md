@@ -100,7 +100,7 @@ Output (in Terminal 1):
 dotnet run --framework net9.0 -- notify 456 service_b
 ```
 
-Output (in Terminal 1):
+Output (in Terminal 3):
 
 ```text
 [service: 'service_b'] event received with id: 456
