@@ -21,9 +21,9 @@ jobs:
           - os: macos-latest
             artifact-name: osx-x64
             lib-name: libiceoryx2_ffi_c.dylib
-          # - os: windows-latest
-          #   artifact-name: win-x64
-          #   lib-name: iceoryx2_ffi_c.dll
+          - os: windows-latest
+            artifact-name: win-x64
+            lib-name: iceoryx2_ffi_c.dll
 
     steps:
       - name: Checkout repository

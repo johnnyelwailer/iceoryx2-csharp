@@ -8,12 +8,26 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-      <!-- Copy native library from Iceoryx2 output directory -->
+  <!-- Copy native library from Iceoryx2 output directory -->
   <Target Name="CopyNativeLibrary" AfterTargets="Build">
-    <ItemGroup>
-      <NativeLibs Include="../../src/Iceoryx2/bin/$(Configuration)/$(TargetFramework)/libiceoryx2_ffi_c.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(NativeLibs)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+    <PropertyGroup>
+      <Iceoryx2OutputPath>../../src/Iceoryx2/bin/$(Configuration)/$(TargetFramework)</Iceoryx2OutputPath>
+    </PropertyGroup>
+    <!-- macOS -->
+    <Copy SourceFiles="$(Iceoryx2OutputPath)/libiceoryx2_ffi_c.dylib"
+          DestinationFolder="$(OutputPath)"
+          Condition="Exists('$(Iceoryx2OutputPath)/libiceoryx2_ffi_c.dylib')"
+          SkipUnchangedFiles="true" />
+    <!-- Linux -->
+    <Copy SourceFiles="$(Iceoryx2OutputPath)/libiceoryx2_ffi_c.so"
+          DestinationFolder="$(OutputPath)"
+          Condition="Exists('$(Iceoryx2OutputPath)/libiceoryx2_ffi_c.so')"
+          SkipUnchangedFiles="true" />
+    <!-- Windows -->
+    <Copy SourceFiles="$(Iceoryx2OutputPath)/iceoryx2_ffi_c.dll"
+          DestinationFolder="$(OutputPath)"
+          Condition="Exists('$(Iceoryx2OutputPath)/iceoryx2_ffi_c.dll')"
+          SkipUnchangedFiles="true" />
   </Target>
 
   <ItemGroup>
