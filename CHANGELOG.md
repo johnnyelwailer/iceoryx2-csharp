@@ -84,7 +84,7 @@ Based on iceoryx2 v0.8.0
 
 ---
 
-[Unreleased]: https://github.com/patdhlk/iceoryx2-csharp-int/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/patdhlk/iceoryx2-csharp-int/releases/tag/v0.1.0
+[Unreleased]: https://github.com/eclipse-iceoryx2/iceoryx2-csharp/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/eclipse-iceoryx2/iceoryx2-csharp/releases/tag/v0.1.0
 
 -->

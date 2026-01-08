@@ -18,7 +18,7 @@
 * [ ] All checks have passed
 
 [commit-guidelines]: https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
-[changelog]: https://github.com/patdhlk/iceoryx2-csharp-int/blob/main/CHANGELOG.md
+[changelog]: https://github.com/eclipse-iceoryx/iceoryx2-csharp/blob/main/CHANGELOG.md
 
 ## PR Reviewer Reminders
 
