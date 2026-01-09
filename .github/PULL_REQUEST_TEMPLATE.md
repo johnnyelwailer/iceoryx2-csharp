@@ -27,6 +27,7 @@
 * Public API is documented with XML comments
 * PR title describes the changes
 * Code follows C# conventions (PascalCase for public APIs)
+    * `dotnet format` has been exectued before submitting
 
 ## References
 
