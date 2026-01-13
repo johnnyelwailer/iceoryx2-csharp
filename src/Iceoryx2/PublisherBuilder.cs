@@ -12,6 +12,7 @@
 
 using Iceoryx2.SafeHandles;
 using System;
+using System.Runtime.InteropServices;
 
 namespace Iceoryx2;
 
@@ -69,7 +70,8 @@ public sealed class PublisherBuilder
                 IntPtr.Zero);  // NULL - let C allocate the struct
 
             if (publisherBuilderHandle == IntPtr.Zero)
-                return Result<Publisher, Iox2Error>.Err(Iox2Error.PublisherCreationFailed);
+                return Result<Publisher, Iox2Error>.Err(new ErrorHandling.PublisherCreationError(
+                    "publisher builder handle was null"));
 
             // Apply QoS settings if specified
             if (_maxLoanedSamples.HasValue)
@@ -91,16 +93,38 @@ public sealed class PublisherBuilder
                 out var publisherHandle);
 
             if (result != Native.Iox2NativeMethods.IOX2_OK || publisherHandle == IntPtr.Zero)
-                return Result<Publisher, Iox2Error>.Err(Iox2Error.PublisherCreationFailed);
+            {
+                var details = result != Native.Iox2NativeMethods.IOX2_OK
+                    ? GetPublisherCreateErrorDetails(result)
+                    : "publisher handle was null";
+                return Result<Publisher, Iox2Error>.Err(new ErrorHandling.PublisherCreationError(details));
+            }
 
             var handle = new SafePublisherHandle(publisherHandle);
             var publisher = new Publisher(handle);
 
             return Result<Publisher, Iox2Error>.Ok(publisher);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return Result<Publisher, Iox2Error>.Err(Iox2Error.PublisherCreationFailed);
+            return Result<Publisher, Iox2Error>.Err(new ErrorHandling.PublisherCreationError(ex.Message));
         }
+    }
+
+    private static string? GetPublisherCreateErrorDetails(int errorCode)
+    {
+        if (errorCode == Native.Iox2NativeMethods.IOX2_OK)
+        {
+            return null;
+        }
+
+        var error = (Native.Iox2NativeMethods.iox2_publisher_create_error_e)errorCode;
+        var ptr = Native.Iox2NativeMethods.iox2_publisher_create_error_string(error);
+        var details = ptr == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(ptr);
+        if (!string.IsNullOrEmpty(details) && details.Contains('_'))
+        {
+            details = details.Replace(" ", string.Empty).Replace("_", " ");
+        }
+        return details;
     }
 }

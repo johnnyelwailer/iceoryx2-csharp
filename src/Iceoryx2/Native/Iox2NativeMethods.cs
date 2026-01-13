@@ -118,6 +118,13 @@ internal static partial class Iox2NativeMethods
         UNABLE_TO_ACQUIRE_ELAPSED_TIME = IOX2_OK + 3
     }
 
+    internal enum iox2_publisher_create_error_e
+    {
+        EXCEEDS_MAX_SUPPORTED_PUBLISHERS = IOX2_OK + 1,
+        UNABLE_TO_CREATE_DATA_SEGMENT = IOX2_OK + 2,
+        FAILED_TO_DEPLOY_THREAD_SAFETY_POLICY = IOX2_OK + 3
+    }
+
     // ========================================
     // Structs - Storage Types
     // ========================================
@@ -1393,6 +1400,9 @@ internal static partial class Iox2NativeMethods
 
     [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
     internal static extern IntPtr iox2_waitset_run_error_string(iox2_waitset_run_error_e error);
+
+    [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern IntPtr iox2_publisher_create_error_string(iox2_publisher_create_error_e error);
 
     // ========================================
     // FileDescriptor API (needed for WaitSet attachments)
