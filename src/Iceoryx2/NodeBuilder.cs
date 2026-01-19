@@ -12,6 +12,7 @@
 
 using Iceoryx2.SafeHandles;
 using System;
+using System.IO;
 
 namespace Iceoryx2;
 
@@ -20,6 +21,7 @@ namespace Iceoryx2;
 /// </summary>
 public sealed class NodeBuilder
 {
+    private static IntPtr _globalConfigHandle = IntPtr.Zero;
     private string? _name;
 
     private NodeBuilder()
@@ -53,6 +55,8 @@ public sealed class NodeBuilder
 
             if (builderHandle == IntPtr.Zero)
                 return Result<Node, Iox2Error>.Err(Iox2Error.NodeCreationFailed);
+
+            _ = TryApplyConfig(ref builderHandle);
 
             // Set node name if provided
             if (!string.IsNullOrEmpty(_name))
@@ -91,5 +95,59 @@ public sealed class NodeBuilder
         {
             return Result<Node, Iox2Error>.Err(Iox2Error.NodeCreationFailed);
         }
+    }
+
+    private static bool TryApplyConfig(ref IntPtr builderHandle)
+    {
+        try
+        {
+            if (_globalConfigHandle != IntPtr.Zero)
+            {
+                Native.Iox2NativeMethods.iox2_node_builder_set_config(
+                    ref builderHandle,
+                    ref _globalConfigHandle);
+                return true;
+            }
+
+            var configPath = ResolveConfigPath();
+            if (string.IsNullOrWhiteSpace(configPath))
+            {
+                return false;
+            }
+
+            var result = Native.Iox2NativeMethods.iox2_config_from_file(
+                IntPtr.Zero,
+                out var configHandle,
+                configPath);
+
+            if (result != Native.Iox2NativeMethods.IOX2_OK || configHandle == IntPtr.Zero)
+            {
+                return false;
+            }
+
+            _globalConfigHandle = configHandle;
+            Native.Iox2NativeMethods.iox2_node_builder_set_config(ref builderHandle, ref _globalConfigHandle);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    private static string? ResolveConfigPath()
+    {
+        var path = Environment.GetEnvironmentVariable("ITR_IOX2_CONFIG_PATH");
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            path = Environment.GetEnvironmentVariable("IOX2_CONFIG_PATH");
+        }
+
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return null;
+        }
+
+        return File.Exists(path) ? path : null;
     }
 }

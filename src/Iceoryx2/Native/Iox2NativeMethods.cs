@@ -449,6 +449,17 @@ internal static partial class Iox2NativeMethods
         public IntPtr deleter;
     }
 
+    // Config Storage
+    [StructLayout(LayoutKind.Sequential, Size = 4256, Pack = 8)]
+    internal struct iox2_config_storage_t { }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+    internal struct iox2_config_t
+    {
+        public iox2_config_storage_t value;
+        public IntPtr deleter;
+    }
+
     // ========================================
     // Logging API
     // ========================================
@@ -491,6 +502,16 @@ internal static partial class Iox2NativeMethods
         IntPtr node_struct_ptr,  // Changed to IntPtr to allow passing NULL
         iox2_service_type_e service_type,
         out IntPtr node_handle);
+
+    /// <summary>
+    /// Sets the config for the node builder.
+    /// C signature: void iox2_node_builder_set_config(iox2_node_builder_h_ref node_builder_handle,
+    ///                                                 iox2_config_h_ref config_handle)
+    /// </summary>
+    [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern void iox2_node_builder_set_config(
+        ref IntPtr node_builder_handle,
+        ref IntPtr config_handle);
 
     // ========================================
     // Service Discovery - Type Details
@@ -1172,6 +1193,15 @@ internal static partial class Iox2NativeMethods
 
     [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
     internal static extern IntPtr iox2_config_global_config();
+
+    [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int iox2_config_from_file(
+        IntPtr struct_ptr,
+        out IntPtr handle_ptr,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string config_file);
+
+    [DllImport(LibraryName, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern void iox2_config_drop(IntPtr handle);
 
     // ========================================
     // Additional Logging API
